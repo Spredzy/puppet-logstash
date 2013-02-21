@@ -6,7 +6,7 @@ class logstash::params {
   $log_dir = '/var/log/logstash'
   $run_dir = '/var/run/logstash'
   $jar_file = "logstash-${version}-monolithic.jar"
-  $bin_file = "${bin_dir}/${jar_file}"
+  $bin_file = "${bin_dir}/logstash.jar"
   $url = "https://logstash.objects.dreamhost.com/release/${jar_file}"
 
   case $::osfamily {

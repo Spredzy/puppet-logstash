@@ -1,14 +1,15 @@
-class logstash ($logstash_user = 'root') {
+class logstash {
 
   include logstash::params
   require java_service_wrapper
-  require apt
 
   case $::osfamily {
     'RedHat' : {
       require jpackage
     }
     'Debian' : {
+      require apt
+
       apt::source { "debian_testing":
         location    => "http://debian.mirror.iweb.ca/debian/",
         release     => "testing",
@@ -23,18 +24,16 @@ class logstash ($logstash_user = 'root') {
   }
 
   file {
-    $logstash::params::bin_dir: ensure => directory;
     $logstash::params::etc_dir: ensure => directory;
     $logstash::params::log_dir: ensure => directory;
     $logstash::params::run_dir: ensure => directory;
   }
 
-  exec { 'download logstash jar':
-    command => "wget ${logstash::params::source}",
+  exec { 'get logstash jar file':
+    command => "wget -O ${logstash::params::bin_file}  ${logstash::params::url}",
     path    => ['/usr/bin'],
     cwd     => $logstash::params::bin_dir,
     require => File[$logstash::params::bin_dir],
-    creates => $logstash::params::bin_file,
   }
 
 }
