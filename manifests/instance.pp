@@ -1,8 +1,14 @@
 define logstash::instance(
   $configuration,
+  $logstash_user = 'root',
 ) {
 
-  java_service_wrapper::service{'logstash-tomcat':
+  class {'logstash':
+    logstash_user => $logstash_user,
+    before        => Java_service_wrapper::Service[$name],
+  }
+
+  java_service_wrapper::service{$name:
     wrapper_mainclass   => 'WrapperJarApp',
     wrapper_additional  => ['-Xms256m', '-Xmx256m'],
     wrapper_library     => ['/usr/local/lib'],
