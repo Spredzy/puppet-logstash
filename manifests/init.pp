@@ -33,7 +33,6 @@ class logstash {
     command => "wget -O ${logstash::params::bin_file}  ${logstash::params::url}",
     path    => ['/usr/bin'],
     cwd     => $logstash::params::bin_dir,
-    require => File[$logstash::params::bin_dir],
   }
 
 }
